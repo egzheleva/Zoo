@@ -32,6 +32,23 @@ class Animal():
         if self.weight < average:
             self.weight += ratio
 
+    def eat(self):
+        query = '''SELECT food_weight_ratio FROM animals 
+                   WHERE species = ?'''
+        cursor = cur()
+        result = cursor.execute(query, (self.species, )).fetchone()
+        return result * self.weight
+
+    def is_dead(self):
+        query = '''SELECT life_expectancy FROM animals 
+                   WHERE species = ?'''
+        cursor = cur()
+        result = cursor.execute(query, (self.species, )).fetchone()
+        return self.age >= result
+
+    def can_give_birth(self):
+        return self.gender == "male"
+
 
 def main():
     a = Animal("tiger", 20, "TIGYR", "male", 100)
